@@ -20,15 +20,15 @@ public class GoogleAuthenticator {
 
     public static final String RANDOM_NUMBER_ALGORITHM = "SHA1PRNG";
 
-    int windowSize = 3; //最多可偏移的时间
+    private int windowSize = 3; //最多可偏移的时间
 
-    public void setWindowSize(int s) {
+    private void setWindowSize(int s) {
         if (s >= 1 && s <= 17) {
             windowSize = s;
         }
     }
 
-    public static String generateSecretKey() throws NoSuchAlgorithmException {
+    private static String generateSecretKey() throws NoSuchAlgorithmException {
         SecureRandom secureRandom = null;
 
         secureRandom = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM);
@@ -39,12 +39,12 @@ public class GoogleAuthenticator {
         return new String(bEncodedKey);
     }
 
-    public static String getQRBarcodeURL(String user, String host, String secret) {
+    private static String getQRBarcodeURL(String user, String host, String secret) {
         String format = "https://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=otpauth://totp/%s@%s%%3Fsecret%%3D%s";
         return String.format(format, user, host, secret);
     }
 
-    public boolean checkCode(String secret, long code, long timeMsec) throws InvalidKeyException, NoSuchAlgorithmException {
+    private boolean checkCode(String secret, long code, long timeMsec) throws InvalidKeyException, NoSuchAlgorithmException {
         Base32 codec = new Base32();
         byte[] decodedKey = codec.decode(secret);
         long t = (timeMsec / 1000L) / 30L;
@@ -59,7 +59,7 @@ public class GoogleAuthenticator {
         return false;
     }
 
-    public static int verifyCode(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
+    private static int verifyCode(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
         byte[] data = new byte[8];
         long value = t;
         for (int i = 8; i-- > 0; value >>>= 8) {
@@ -79,5 +79,36 @@ public class GoogleAuthenticator {
         truncatedHash &= 0x7FFFFFFF;
         truncatedHash %= 1000000;
         return (int) truncatedHash;
+    }
+
+
+    public static String generateSecret(){
+        String secret = "";
+        try {
+            secret = GoogleAuthenticator.generateSecretKey();
+            String url = GoogleAuthenticator.getQRBarcodeURL("testuser", "testhost", secret);
+            System.out.println("Please register " + url);
+            System.out.println("Secret key is " + secret);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return secret;
+    }
+
+    public static boolean authCode(String userCode,String savedSecret){
+        long code = Long.parseLong(userCode);
+        long t = System.currentTimeMillis();
+        GoogleAuthenticator ga = new GoogleAuthenticator();
+        ga.setWindowSize(15);
+        boolean r = false;
+        try {
+            r = ga.checkCode(savedSecret,code,t);
+
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return r;
     }
 }
