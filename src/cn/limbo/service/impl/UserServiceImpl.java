@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by limbo on 2016/11/26.
  */
-@Service
+@Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService{
 

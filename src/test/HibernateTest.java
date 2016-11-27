@@ -14,7 +14,6 @@ public class HibernateTest {
 
     @Test
     public void save(){
-
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         UserService service = ctx.getBean(UserService.class);
         service.addUser("aaa","111");

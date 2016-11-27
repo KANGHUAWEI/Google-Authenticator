@@ -2,9 +2,7 @@ package cn.limbo.dao.impl;
 
 import cn.limbo.dao.UserDao;
 import cn.limbo.entity.User;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +13,7 @@ import java.util.List;
 /**
  * Created by limbo on 2016/11/26.
  */
-@Repository
+@Repository("userDao")
 public class UserDaoImpl implements UserDao {
 
     @Autowired
