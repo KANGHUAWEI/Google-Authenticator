@@ -19,6 +19,11 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    /**
+     * 根据ID获取用户实体
+     * @param ID 用户ID
+     * @return 返回用户实体
+     */
     @Override
     public User getUserByID(String ID) {
 //        Query query = sessionFactory.getCurrentSession().createQuery("from User u WHERE u.ID = ?");
@@ -27,6 +32,16 @@ public class UserDaoImpl implements UserDao {
 //        System.out.println(users.toArray());
         User user = (User) sessionFactory.getCurrentSession().get(User.class,ID);
         return user;
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+        String hql = "FROM User u WHERE u.name = ?";
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        query.setString(0,userName);
+        if(query.list().size() != 0)
+            return (User) query.list().get(0);
+        return null;
     }
 
 

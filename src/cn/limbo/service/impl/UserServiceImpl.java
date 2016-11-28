@@ -36,11 +36,18 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUserByID(String ID) {
-
+        userDao.deleteUserByID(ID);
     }
 
     @Override
     public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
 
+    @Override
+    public boolean isExist(String userName) {
+        if(userDao.getUserByName(userName) != null)
+            return true;
+        return false;
     }
 }

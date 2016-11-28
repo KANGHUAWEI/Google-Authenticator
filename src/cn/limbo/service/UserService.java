@@ -19,4 +19,6 @@ public interface UserService {
 
     public void updateUser(User user);
 
+    public boolean isExist(String userName);
+
 }

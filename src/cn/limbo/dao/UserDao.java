@@ -13,6 +13,8 @@ public interface UserDao {
 
     public User getUserByID(String ID);
 
+    public User getUserByName(String userName);
+
     public List<User> getAllUsers();
 
     public void addUser(User user);
