@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 登陆控制器
  * Created by limbo on 2016/11/28.
  */
 @Controller

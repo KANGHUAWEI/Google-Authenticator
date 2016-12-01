@@ -7,16 +7,22 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="cn.limbo" />
+    <context:component-scan base-package="cn.limbo"/>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-        <property name="prefix" value="/WEB-INF/html/" />
-        <property name="suffix" value=".html" />
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/html/"/>
+        <property name="suffix" value=".html"/>
     </bean>
 
     <!-- 配置静态资源：default-servlet-handler将在SpringMVC上下文中定义DefaultServletHttpRequestHandler,
      它会对进入DispatcherServlet的请求进行筛选，如果发现是没有经过映射的请求，就将该请求交由WEB应用服务器默认的 Servlet处理。如果不是静态资源的请求，才由DispatcherServlet继续处理。 -->
-    <mvc:default-servlet-handler />
+    <!--
+        <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
+        这个针对html没有任何用处，只是针对jsp可以
+    -->
+    <mvc:default-servlet-handler/>
+
+    <!--要使用@Controller就要配置这个-->
     <mvc:annotation-driven/>
 
 </beans>

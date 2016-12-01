@@ -3,36 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="WEB-INF/css/login.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
     <link rel="icon" href="logo.png" type="image/x-icon"/>
-    <script src="WEB-INF/js/jquery-1.12.4.js"></script>
-    <script src="WEB-INF/js/login.js"></script>
+    <script src="js/jquery-1.12.4.js"></script>
+    <script src="js/login.js"></script>
 </head>
 <body>
 <div class="top_div"></div>
+<!--登录-->
 <div class="login_frame">
+
     <div class="animal_img">
         <div class="tou"></div>
         <div class="initial_left_hand" id="left_hand"></div>
         <div class="initial_right_hand" id="right_hand"></div>
     </div>
-    <!--用户名密码-->
-    <p class="user_input"><span
-            class="u_logo"></span> <input class="ipt" type="text" name="userName" placeholder="请输入用户名...">
-    </p>
-    <p style="position: relative;"><span class="p_logo"></span>
-        <input class="ipt" id="password" name="userPassword" type="password" placeholder="请输入密码...">
-    </p>
 
-    <div class="login_button">
-        <p style="margin: 0px 35px 20px 45px;"><span style="float: left;"><a style="color: rgb(204, 204, 204);" href="#">忘记密码?</a></span>
-            <span style="float: right;"><a class="a_register" href="#">注册</a>
-              <a class="a_login" href="#">登录</a>
-           </span>
-        </p>
+    <!--登陆框-->
+    <div id="login_frame">
+        <form action="loginController/login.do" method="post">
+            <!--用户名密码-->
+            <p class="user_input"><span class="u_logo"></span>
+                <input class="ipt" type="text" name="userName" placeholder="请输入用户名...">
+            </p>
+            <p style="position: relative;"><span class="p_logo"></span>
+                <input class="ipt password" id="password" name="userPassword" type="password" placeholder="请输入密码...">
+            </p>
+            <div class="login_button">
+                <p style="margin: 0px 35px 20px 45px;">
+                    <span style="float: left;">
+                        <a id="forget_password" class="default_button_style" href="#">忘记密码?</a>
+                    </span>
+                    <span style="float: right;">
+                        <input id="login" class="chosen_button_style" type="submit" value="登录"/>
+                    </span>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <!--注册框-->
+    <div id="register_frame" style="display: none">
+        <form action="registerController/register.do" method="post">
+            <p class="user_input"><span class="u_logo"></span>
+                <input class="ipt" type="text" name="registerName" placeholder="请输入用户名...">
+            </p>
+            <p style="position: relative;"><span class="p_logo"></span>
+                <input class="ipt password" name="registerPassword" type="password" placeholder="请输入密码...">
+            </p>
+            <p style="position: relative; padding-top: 10px"><span class="p2_logo"></span>
+                <input class="ipt password" name="verifyPassword" type="password" placeholder="请再次密码...">
+            </p>
+            <div class="login_button">
+                <p style="margin: 0px 35px 20px 45px;">
+                    <span style="float: right;">
+                        <input id="register2" type="submit" class="chosen_button_style" value="注册"/>
+                    </span>
+                </p>
+            </div>
+        </form>
     </div>
 </div>
-<div style="text-align:center;">
+
+<div class="tab">
+    <a id="tab_login" class="tab_chosen" href="#">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a id="tab_register" class="tab_default" href="#">注册</a>
 </div>
+
+<footer class="foot">&copy;by Limbo</footer>
 </body>
 </html>
