@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * 登陆控制器
@@ -37,4 +39,26 @@ public class LoginController {
         return "error";
     }
 
+    @RequestMapping("/isExist.do")
+    public void isExist(HttpServletRequest request, HttpServletResponse response){
+        String userName = request.getParameter("userName").trim();
+        System.out.println(userName);
+        Writer writer = null;
+        try {
+            writer = response.getWriter();
+            if(!userService.isExist(userName)){
+                writer.write("fail");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

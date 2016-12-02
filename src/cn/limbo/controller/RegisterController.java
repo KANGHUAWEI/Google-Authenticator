@@ -20,8 +20,9 @@ public class RegisterController {
 
     @RequestMapping("/register.do")
     public String register(HttpServletRequest request, HttpServletResponse response){
-        String userName = request.getParameter("userName").trim();
-        String userPassword = request.getParameter("userPassword").trim();
+        String userName = request.getParameter("registerName").trim();
+        String userPassword = request.getParameter("registerPassword").trim();
+
 
         if(!userName.equals("") && !userPassword.equals("")){
             if(!userService.isExist(userName)){

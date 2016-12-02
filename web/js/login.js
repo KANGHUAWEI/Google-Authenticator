@@ -25,7 +25,7 @@ $(function () {
             }
         }, 2000);
     });
-    //失去焦点
+    //失去焦点,切换css样式
     $(".password").blur(function () {
         $("#left_hand").attr("class", "initial_left_hand");
         $("#left_hand").attr("style", "left:100px;top:-12px;");
@@ -34,6 +34,7 @@ $(function () {
     });
 
     //切换登录注册标签页的特效
+    //也就是切换css样式
     $("#tab_login").mouseover(function () {
         $("#tab_login").attr("class","tab_chosen");
         $("#tab_register").attr("class","tab_default");
