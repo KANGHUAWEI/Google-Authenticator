@@ -7,7 +7,10 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="cn.limbo"/>
+    <context:component-scan base-package="cn.limbo">
+        <!--不要将Service扫进来，否则aop无法使用-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/html/"/>

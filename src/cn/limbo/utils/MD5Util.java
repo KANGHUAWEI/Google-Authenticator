@@ -61,13 +61,13 @@ public class MD5Util {
         return know.equals(encode2Hex(source));
     }
 
-    public static void main(String[] args) {
-        try {
-            String str = MD5Util.encode2Hex("aa");
-            System.out.println(str);
-            System.out.println(MD5Util.validate("aa",str));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            String str = MD5Util.encode2Hex("aa");
+//            System.out.println(str);
+//            System.out.println(MD5Util.validate("aa",str));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

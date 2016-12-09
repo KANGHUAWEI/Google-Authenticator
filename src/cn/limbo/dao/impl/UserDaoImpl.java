@@ -2,18 +2,22 @@ package cn.limbo.dao.impl;
 
 import cn.limbo.dao.UserDao;
 import cn.limbo.entity.User;
+import cn.limbo.utils.MD5Util;
 import org.hibernate.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
  * Created by limbo on 2016/11/26.
  */
 @Repository("userDao")
+@Component
 public class UserDaoImpl implements UserDao {
 
     @Autowired
@@ -53,6 +57,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void addUser(User user) {
+        try {
+            user.setPassword(MD5Util.encode2Hex(user.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         sessionFactory.getCurrentSession().save(user);
     }
 

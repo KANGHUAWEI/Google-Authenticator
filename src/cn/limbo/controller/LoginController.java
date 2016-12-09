@@ -42,7 +42,6 @@ public class LoginController {
     @RequestMapping("/isExist.do")
     public void isExist(HttpServletRequest request, HttpServletResponse response){
         String userName = request.getParameter("userName").trim();
-        System.out.println(userName);
         Writer writer = null;
         try {
             writer = response.getWriter();
