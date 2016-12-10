@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
 
     @Override
-    public User getUserByID(String ID) {
+    public User getUserByID(int ID) {
         return userDao.getUserByID(ID);
     }
 
@@ -31,17 +31,18 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void addUser(String name,String password) {
-        userDao.addUser(new User(name,password));
+        User user = new User(name,password);
+        userDao.save(user);
     }
 
     @Override
-    public void deleteUserByID(String ID) {
-        userDao.deleteUserByID(ID);
+    public void deleteUserByID(int ID) {
+        userDao.delete(ID);
     }
 
     @Override
     public void updateUser(User user) {
-        userDao.updateUser(user);
+        userDao.update(user.getID(),user.getName(),user.getPassword());
     }
 
     @Override

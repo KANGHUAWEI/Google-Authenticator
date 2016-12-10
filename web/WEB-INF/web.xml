@@ -61,12 +61,23 @@
     对于关联对象的查询可能会在渲染jsp的时候才发生，但是这个时候hibernate的当前session默认已经关闭了，
     就会抛异常，所以我们经常需要hibernate在渲染jsp页面的时候还开着session，
     这就需要在web.xml中配置一个拦截所有请求的filter-->
+    <!--如果是hibernate的话这样配置-->
+    <!--<filter>-->
+        <!--<filter-name>hibernateFilter</filter-name>-->
+        <!--<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>hibernateFilter</filter-name>-->
+        <!--<url-pattern>*.do</url-pattern>-->
+    <!--</filter-mapping>-->
+
+    <!--jpa配置的方式，需要配置entityManager-->
     <filter>
-        <filter-name>hibernateFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+        <filter-name>entityManagerInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>hibernateFilter</filter-name>
+        <filter-name>entityManagerInViewFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
 

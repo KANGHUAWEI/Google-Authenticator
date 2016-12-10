@@ -4,55 +4,98 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd">
 
     <!--自动扫描包-->
     <context:component-scan base-package="cn.limbo">
         <!--不要将Controller扫进来，否则aop无法使用-->
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
     <!--使Aspect注解起作用,自动为匹配的类生成代理对象-->
-    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!--引入properties-->
-    <context:property-placeholder location="classpath:db.properties"/>
+    <context:property-placeholder location="classpath:hibernate.properties"/>
 
     <!--配置数据源-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="user" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
-        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <property name="user" value="${dataSource.username}"/>
+        <property name="password" value="${dataSource.password}"/>
+        <property name="jdbcUrl" value="${dataSource.url}"/>
+        <property name="driverClass" value="${dataSource.driverClassName}"/>
     </bean>
 
-    <!--sessionFactory-->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <!-- 配置数据源属性 -->
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 配置扫描的实体包(pojo) -->
-        <property name="namingStrategy">
-            <bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>
-        </property>
-        <property name="packagesToScan" value="cn.limbo.entity"/>
+    <!--&lt;!&ndash;sessionFactory&ndash;&gt;-->
+    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">-->
+    <!--&lt;!&ndash; 配置数据源属性 &ndash;&gt;-->
+    <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--&lt;!&ndash; 配置扫描的实体包(pojo) &ndash;&gt;-->
+    <!--<property name="namingStrategy">-->
+    <!--<bean class="org.hibernate.cfg.ImprovedNamingStrategy"/>-->
+    <!--</property>-->
+    <!--<property name="packagesToScan" value="cn.limbo.entity"/>-->
 
-        <property name="hibernateProperties">
+    <!--<property name="hibernateProperties">-->
+    <!--<props>-->
+    <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>-->
+    <!--<prop key="hibernate.show_sql">true</prop>-->
+    <!--<prop key="hibernate.format_sql">true</prop>-->
+    <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+    <!--</props>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="persistenceProvider"
+          class="org.hibernate.ejb.HibernatePersistence"/>
+
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="database" value="MYSQL"/>
+    </bean>
+
+    <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+
+    <!--jpa工厂-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource"/>
+
+        <property name="persistenceProvider" ref="persistenceProvider"/>
+        <!--适配器-->
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+
+        <property name="jpaDialect" ref="jpaDialect"/>
+
+        <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">${dataSource.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${dataSource.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${dataSource.show_sql}</prop>
+                <prop key="hibernate.format_sql">${dataSource.format_sql}</prop>
             </props>
         </property>
+
+        <property name="packagesToScan">
+            <list>
+                <value>cn.limbo.entity</value>
+            </list>
+        </property>
     </bean>
 
+    <jpa:repositories base-package="cn.limbo.dao"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+
     <!-- 配置Hibernate 的事物管理器 -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
+
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

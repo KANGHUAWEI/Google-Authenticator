@@ -20,3 +20,19 @@
 
     扫描包路径，不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在springmvc.xml中扫描过一遍了。
     完成以上工作
+
+
+2.jpa包冲突
+    当前用的jpa版本如下：
+    spring-data-commons-1.5.0
+    spring-data-jpa-1.3.3
+    slf4j-api-1.6.1
+    slf4j-log4j12-1.7.1
+    如果commons和jpa包名冲突的话会出现 无法将名称 'repository:auditing-attributes' 解析为 'attribute group' 组件
+    如果不引入slf4j的包，会出现依赖包找不到。
+
+
+3.jpa的XML书写：
+    书写可以为jpa专门写一个persistence.xml，但是要把这个文件放在src下路径下，如果框架中集成了hibernate
+    则需要把配置sessionFactory的地方都改成entityManager，还有web.xml中要把关于sessionFactory的过滤器
+    修改成关于entityManager的过滤器

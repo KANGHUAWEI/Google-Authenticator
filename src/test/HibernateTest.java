@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 /**
  * Created by limbo on 2016/11/26.
  */
@@ -16,7 +18,17 @@ public class HibernateTest {
     public void save(){
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         UserService service = ctx.getBean(UserService.class);
-        service.addUser("aaa","111");
+//        service.addUser("aaa","111");
+//
+//        service.deleteUserByID(3);
+//
+//        User u = service.getUserByID(4);
+//        u.setName("bbb");
+//        service.updateUser(u);
+//
+//        List<User> users = service.getAllUsers();
+//        System.out.println(users);
+        service.isExist("wyh");
     }
 
 }
