@@ -5,11 +5,13 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:ehcache="http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
-       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd">
+       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.2.xsd
+       http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd">
 
     <!--自动扫描包-->
     <context:component-scan base-package="cn.limbo">
@@ -19,6 +21,18 @@
 
     <!--使Aspect注解起作用,自动为匹配的类生成代理对象-->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <ehcache:annotation-driven />
+
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <ehcache:config cache-manager="cacheManager">
+        <ehcache:evict-expired-elements interval="60" />
+    </ehcache:config>
+
+
 
     <!--引入properties-->
     <context:property-placeholder location="classpath:hibernate.properties"/>
@@ -64,7 +78,7 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <!--数据源-->
         <property name="dataSource" ref="dataSource"/>
-
+        <!--持久层提供者-->
         <property name="persistenceProvider" ref="persistenceProvider"/>
         <!--适配器-->
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
@@ -74,9 +88,15 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">${dataSource.dialect}</prop>
+                <prop key="hibernate.connection.driver_class">${dataSource.driverClassName}</prop>
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.jdbc.fetch_size">18</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
                 <prop key="hibernate.hbm2ddl.auto">${dataSource.hbm2ddl.auto}</prop>
                 <prop key="hibernate.show_sql">${dataSource.show_sql}</prop>
                 <prop key="hibernate.format_sql">${dataSource.format_sql}</prop>
+                <!--做bean validation的也就是对你的输入的数据进行语义的验证-->
+                <prop key="javax.persistence.validation.mode">none</prop>
             </props>
         </property>
 

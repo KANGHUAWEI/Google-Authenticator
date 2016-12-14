@@ -1,17 +1,15 @@
 package cn.limbo.dao;
 
 import cn.limbo.entity.User;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
+ * user表的数据操作
  * Created by limbo on 2016/11/26.
  */
 
