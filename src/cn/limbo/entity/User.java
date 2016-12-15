@@ -1,6 +1,7 @@
 package cn.limbo.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by limbo on 2016/11/26.
@@ -8,7 +9,7 @@ import javax.persistence.*;
 
 @Entity(name = "User")
 @Table(name = "user")
-public class User {
+public class User implements Serializable{
 
     private Integer ID;
     private String name;

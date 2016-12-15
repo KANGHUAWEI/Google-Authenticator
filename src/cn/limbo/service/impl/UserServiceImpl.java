@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Cacheable(cacheName = "sampleCache")
     public boolean isExist(String userName) {
         if(userDao.getUserByName(userName) != null)
             return true;

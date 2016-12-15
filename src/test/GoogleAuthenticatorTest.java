@@ -8,7 +8,6 @@ import org.junit.Test;
  */
 public class GoogleAuthenticatorTest {
 
-
     @Test
     public void genSecret(){
         System.out.println(GoogleAuthenticator.generateSecret());
@@ -16,7 +15,7 @@ public class GoogleAuthenticatorTest {
 
     @Test
     public void authCode(){
-        System.out.println(GoogleAuthenticator.authCode("109622","TEM57QKWKQ5Y6YRP"));
+        System.out.println(GoogleAuthenticator.authCode("762204","KT5FD46FWD55DVPC"));
     }
 
 }

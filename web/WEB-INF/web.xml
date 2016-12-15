@@ -81,4 +81,9 @@
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
 
+    <!--防止ehcache删除.index文件-->
+    <!--index文件的作用：ehcache每一次都会从缓存目录中读取index用来恢复上次查询到的数据-->
+    <listener>
+        <listener-class>net.sf.ehcache.constructs.web.ShutdownListener</listener-class>
+    </listener>
 </web-app>

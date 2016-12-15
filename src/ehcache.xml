@@ -11,7 +11,7 @@
          updateCheck="false">
 
     <!--缓存保存地址-->
-    <diskStore path="java.io.tmpdir"/>
+    <diskStore path="/Users/limbo/Desktop/cache"/>
 
     <!--默认的缓存配置-->
     <defaultCache
@@ -33,6 +33,7 @@
         2.下面是一些可选属性：
         timeToIdleSeconds： 设定元素在过期前空闲状态的时间，只对非持久性缓存对象有效。默认值为0,值为0意味着元素可以闲置至无限长时间。
         timeToLiveSeconds: 设定元素从创建到过期的时间。其他与timeToIdleSeconds类似。
+        以上两个选项只有在eternal=false才会生效
         diskPersistent: 设定在虚拟机重启时是否进行磁盘存储，默认为false.(我的直觉，对于安全小型应用，宜设为true)。
         diskExpiryThreadIntervalSeconds: 访问磁盘线程活动时间。
         diskSpoolBufferSizeMB: 存入磁盘时的缓冲区大小，默认30MB,每个缓存都有自己的缓冲区。
@@ -40,12 +41,14 @@
         First In First Out (FIFO)，先进先出。Less Frequently Used(specified as LFU)最少使用
     -->
     <cache name="sampleCache"
-           maxElementsInMemory="10000"
+           maxElementsInMemory="1"
            maxElementsOnDisk="1000"
            eternal="false"
            overflowToDisk="true"
            diskSpoolBufferSizeMB="20"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"
+           timeToIdleSeconds="30000"
+           timeToLiveSeconds="60000"
+           diskPersistent="true"
            memoryStoreEvictionPolicy="LFU" />
+
 </ehcache>
