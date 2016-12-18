@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--http部分配置如何拦截用户请求。auto-config='true'将自动配置几种常用的权限控制机制，
+    包括form, anonymous, rememberMe。-->
+    <http auto-config="true">
+        <!--让没登陆的用户也可以访问login.html-->
+        <!--这是因为配置文件中的“/**”配置，要求用户访问任意一个系统资源时，必须拥有ROLE_USER角色，/login.html
+        也不例外，如果我们不为/login.html单独配置访问权限，会造成用户连登陆的权限都没有，这是不正确的。-->
+        <intercept-url pattern="/login.html" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/html/admin.html" access="ROLE_ADMIN" />
+        <intercept-url pattern="/**" access="ROLE_USER" />
+        <!--login-page表示使用自定义的登录界面登录 否则必须使用spring security来登录-->
+        <!--authentication-failure-url表示用户登陆失败时，跳转到哪个页面-->
+        <!--default-target-url表示登陆成功时，跳转到哪个页面-->
+        <form-login login-page="/login.html"
+            authentication-failure-url="/login.html?error=true"
+            default-target-url="/html/home.html"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <!--配置登录系统的用户信息和权限，这个只是定义在xml中的，而日常开发都是使用数据库保存信息的-->
+            <!--<user-service>-->
+                <!--<user name="admin" password="123456" authorities="ROLE_ADMIN,ROLE_USER"/>-->
+                <!--<user name="user" password="123456" authorities="ROLE_USER"/>-->
+            <!--</user-service>-->
+
+            <!--当我们需要自行定义数据库表的结构的时候需要用到这样定义-->
+            <!--users-by-username-query为根据用户名查找用户，系统通过传入的用户名查询当前用户的登录名，密码和是否被禁用这一状态。-->
+            <!--authorities-by-username-query为根据用户名查找权限，系统通过传入的用户名查询当前用户已被授予的所有权限。-->
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="SELECT user_name ,user_password,enabled
+                                                        FROM users
+                                                        WHERE user_name = ?"
+                               authorities-by-username-query="SELECT u.user_name,r.role_name AS authority
+                                                              FROM users u
+                                                              JOIN user_role ur
+                                                                ON u.user_id = ur.user_id
+                                                              JOIN role r
+                                                                ON r.role_id = ur.role_id
+                                                              WHERE u.user_name=?"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <context:property-placeholder location="classpath:hibernate.properties"/>
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="username" value="${dataSource.username}" />
+        <beans:property name="password" value="${dataSource.password}" />
+        <beans:property name="driverClassName" value="${dataSource.driverClassName}" />
+        <beans:property name="url" value="${dataSource.url}" />
+    </beans:bean>
+
+</beans:beans>

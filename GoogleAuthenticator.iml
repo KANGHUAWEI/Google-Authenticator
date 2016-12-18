@@ -33,5 +33,6 @@
     <orderEntry type="library" name="ehcache-web-2.0.4" level="project" />
     <orderEntry type="library" name="ehcache-core-2.4.5" level="project" />
     <orderEntry type="library" name="guava-r09" level="project" />
+    <orderEntry type="library" name="spring-security-acl-3.2.6.RELEASE" level="project" />
   </component>
 </module>

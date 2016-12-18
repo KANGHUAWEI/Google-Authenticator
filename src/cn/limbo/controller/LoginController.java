@@ -34,7 +34,7 @@ public class LoginController {
 
         if(!userName.equals("") && !userPassword.equals("")) {
             if(userService.isExist(userName))
-                return "home";
+                return "admin";
         }
         return "error";
     }

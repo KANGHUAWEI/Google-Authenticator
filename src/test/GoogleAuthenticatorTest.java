@@ -15,7 +15,7 @@ public class GoogleAuthenticatorTest {
 
     @Test
     public void authCode(){
-        System.out.println(GoogleAuthenticator.authCode("762204","KT5FD46FWD55DVPC"));
+        System.out.println(GoogleAuthenticator.authCode("164670","RYKGPRJLH7OKRHPV"));
     }
 
 }

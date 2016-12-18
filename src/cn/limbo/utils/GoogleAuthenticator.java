@@ -30,7 +30,6 @@ public class GoogleAuthenticator {
 
     private static String generateSecretKey() throws NoSuchAlgorithmException {
         SecureRandom secureRandom = null;
-
         secureRandom = SecureRandom.getInstance(RANDOM_NUMBER_ALGORITHM);
         secureRandom.setSeed(Base64.decodeBase64(SEED));
         byte[] buffer = secureRandom.generateSeed(SECRET_SIZE);
@@ -99,11 +98,10 @@ public class GoogleAuthenticator {
         long code = Long.parseLong(userCode);
         long t = System.currentTimeMillis();
         GoogleAuthenticator ga = new GoogleAuthenticator();
-        ga.setWindowSize(15);
+        ga.setWindowSize(3);
         boolean r = false;
         try {
             r = ga.checkCode(savedSecret,code,t);
-
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
